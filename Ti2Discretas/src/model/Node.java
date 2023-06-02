@@ -2,23 +2,33 @@ package model;
 
 class Node<T> implements Comparable<Node<T>> {
     private T vertex;
-    private int distance;
+    private double weight;
 
-    public Node(T vertex, int distance) {
+
+
+
+    public Node(T vertex, double weight) {
         this.vertex = vertex;
-        this.distance = distance;
+        this.weight = weight;
+
     }
+
+    public void setVertex(T vertex) {
+        this.vertex = vertex;
+    }
+
+
 
     public T getVertex() {
         return vertex;
     }
 
-    public int getDistance() {
-        return distance;
+    public double getweight() {
+        return weight;
     }
 
     @Override
     public int compareTo(Node<T> other) {
-        return Integer.compare(distance, other.distance);
+        return Double.compare(weight, other.weight);
     }
 }

@@ -3,26 +3,44 @@ package model;
 public class Controller {
 
 
-    //1== airplane, 2== cars
-    // para los aviones: cada hora recorren 900 km de distancia lo que  equivale a 2 toneladas de c02
-    // para los carros: cada hora recorren 80 km de distancia, lo que equivale a 2 kg de c02
-    public int calculateWeight(int distance, int option){
+    public  double calculateWeight(double distance, int tipoVehiculo) {
+        double factorPonderacion = 0.5; // Factor de ponderación para las emisiones (ajustable según tus necesidades)
 
-        int emision=0;
+        double weight = distance;
 
-
-        if(option==1) {
-            int distanceForhour = distance / 900;
-
-            emision = distanceForhour * 2;
-        }else if (option==2){
-            int distanceForHour= distance/80;
-            emision=distanceForHour*2;
+        if (tipoVehiculo == 1) { // Avión
+            double emsionsAirplane = calculateEmisionsAirplane(distance);
+            weight += emsionsAirplane * factorPonderacion;
+        } else if (tipoVehiculo == 2) { // Carro
+            double emisionesAuto = calculateEmisionsCar(distance);
+            weight += emisionesAuto * factorPonderacion;
         }
 
-        return emision;
-
+        return weight;
     }
 
 
+
+
+    public double calculateEmisionsAirplane(double distance) {
+        // Supongamos que un avión emite aproximadamente 250 gramos de CO2 por cada kilómetro recorrido
+        double emisionsforKm = 0.25; // 0.25 kg (250 gramos)
+
+        return emisionsforKm * distance; // Emisiones totales en kg
+    }
+
+    public  double calculateEmisionsCar(double distance) {
+        // Supongamos que un automóvil emite aproximadamente 120 gramos de CO2 por cada kilómetro recorrido
+        double emisionsforKm = 0.12; // 0.12 kg (120 gramos)
+
+        return emisionsforKm * distance; // Emisiones totales en kg
+    }
+
+
+
+
 }
+
+
+
+
