@@ -1,0 +1,130 @@
+class Solution {
+    static int numProvinces(ArrayList<ArrayList<Integer>> adj, int V) {
+        // code here
+        ArrayList<Vertice<Integer>> vertices = new ArrayList<>();
+        for(int i=1; i<=V;i++){
+            vertices.add(new Vertice(i));
+        }
+        ArrayList<ArrayList<Vertice<Integer>>> grafo = matrixToGraph(adj,vertices);
+
+        int cont = 0;
+        for(int i=0;i<grafo.size();i++){
+            if(vertices.get(i).getColor().equals(Color.WHITE)){
+                cont++;
+                bfs(i+1,grafo);
+            }
+        }
+        return cont;
+    }
+    public static void bfs(Integer start,ArrayList<ArrayList<Vertice<Integer>>> grafo){
+        ArrayList<Integer> visited = new ArrayList<>();
+        visited.add(start);
+        Queue<Integer> queue = new Queue<>();
+        queue.enqueue(start);
+        while(!queue.isEmpty()){
+            Integer u = queue.dequeue();
+            ArrayList<Vertice<Integer>> list = grafo.get(u-1);
+            for(Vertice<Integer> i:list){
+                if(i.getColor().equals(Color.WHITE)){
+                    queue.enqueue(i.getElement());
+                    visited.add(i.getElement());
+                    i.setColor(Color.GRAY);
+                }
+            }
+        }
+    }
+
+    public static ArrayList<ArrayList<Vertice<Integer>>> matrixToGraph(ArrayList<ArrayList<Integer>> adj,ArrayList<Vertice<Integer>> vertices){
+        ArrayList<ArrayList<Vertice<Integer>>> grafo = new ArrayList<>();
+        for(int i=0;i<adj.size();i++){
+            grafo.add(new ArrayList<>());
+            ArrayList<Integer> list = adj.get(i);
+            for(int j=0;j<list.size();j++){
+                if(list.get(j)==1){
+                    grafo.get(i).add(vertices.get(j));
+                }
+            }
+        }
+        return grafo;
+    }
+}
+class Vertice<T>{
+    private T element;
+    private Color color;
+    public Vertice(T element){
+        this.element = element;
+        this.color = Color.WHITE;
+    }
+    public T getElement() {
+        return element;
+    }
+    public void setElement(T element) {
+        this.element = element;
+    }
+    public Color getColor(){return this.color;}
+    public void setColor(Color color){this.color = color;}
+
+}
+class Queue<T> {
+    private Node<T> front;
+    private Node<T> back;
+
+    public Queue(){
+        front = null;
+        back = null;
+    }
+    public boolean isEmpty(){
+        if(front == null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public void enqueue(Object e){
+        if(isEmpty()){
+            front = new Node(e);
+            back = front;
+        }else{
+            Node newNode = new Node(e);
+            back.setNext(newNode);
+            back = newNode;
+        }
+    }
+    public T dequeue(){
+        if(isEmpty()){
+            return null;
+        }else{
+            Node node = front;
+            front = front.getNext();
+            return (T)node.getElement();
+        }
+    }
+}
+enum Color{
+    WHITE,
+    GRAY,
+}
+class Node<T> {
+    private T e;
+    private Node<T> next;
+    private Node<T> previous;
+    public Node(T aid){
+        this.e = aid;
+    }
+    public T getElement(){
+        return e;
+    }
+    public Node<T> getPrevious() {
+        return previous;
+    }
+    public void setPrevious(Node<T> previous) {
+        this.previous = previous;
+    }
+    public Node<T> getNext() {
+        return next;
+    }
+    public void setNext(Node<T> next) {
+        this.next = next;
+    }
+
+};
